@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-forwarder_images = vppagent-forwarder kernel-forwarder
+forwarder_images = vppagent-forwarder kernel-forwarder tf-forwarder
 
 # TODO: files in forwarder doesn't follow the regular structure: ./module/cmd/app,
 # after fixing 'kernel-forwarder' and 'vppagent-forwarder' targets could be eliminated
@@ -21,6 +21,13 @@ go-kernel-forwarder-build: go-%-build:
 	$(info ----------------------  Building forwarder::$* via Cross compile ----------------------)
 	@pushd ./forwarder && \
 	${GO_BUILD} -o $(BIN_DIR)/$*/$* ./kernel-forwarder/cmd/ && \
+	popd
+
+.PHONY: go-tf-forwarder-build
+go-tf-forwarder-build: go-%-build:
+	$(info ----------------------  Building forwarder::$* via Cross compile ----------------------)
+	@pushd ./forwarder && \
+	${GO_BUILD} -o $(BIN_DIR)/$*/$* ./tf-forwarder/cmd/ && \
 	popd
 
 .PHONY: go-vppagent-forwarder-build
